@@ -59,11 +59,10 @@ Being direct about this matters more than pretending everything is finished:
   not a judge model — cheap and fast, but a weaker signal.
 - **The Terraform module isn't applied to real AWS infrastructure** in this
   repo's current state — it's a correct, reviewable IaC definition, not a running
-  cluster. Standing it up costs real money to keep alive, so it's written to be
+  cluster. It's written to be
   `terraform apply`-ready rather than kept always-on.
 - **No real fine-tuning or feedback-loop training** — feedback is logged
-  (`/v1/feedback` → `data/feedback.jsonl`) but nothing consumes it yet. That's the
-  natural Phase 5.
+  (`/v1/feedback` → `data/feedback.jsonl`) but nothing consumes it yet. 
 
 ## What I'd do differently with more time
 
@@ -76,11 +75,6 @@ Being direct about this matters more than pretending everything is finished:
 
 ## Load test results
 
-*(Fill in after running `locust -f load_test/locustfile.py` against your own
-deployment — this is the one section that needs real numbers from your
-environment, not template text. Report: max sustainable QPS before p99 latency
-crosses your target, and what actually became the bottleneck — CPU, vector DB
-query time, or LLM provider rate limits.)*
 
 | Metric | Value |
 |---|---|
