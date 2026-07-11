@@ -1,0 +1,38 @@
+# Canary track: 1 pod alongside 3 stable pods == ~25% of traffic via the
+# shared Service selector (which matches on `app: rag-service` only, not
+# `track`). Promoting = pointing k8s/deployment.yaml's image tag at this
+# same image and re-applying, then scaling this canary Deployment to 0.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rag-service-canary
+  labels:
+    app: rag-service
+    track: canary
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rag-service
+      track: canary
+  template:
+    metadata:
+      labels:
+        app: rag-service
+        track: canary
+    spec:
+      containers:
+        - name: rag-service
+          image: ghcr.io/cdonnns/rag-service:IMAGE_TAG
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: rag-service-config
+            - secretRef:
+                name: rag-service-secrets
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8000
+            initialDelaySeconds: 10

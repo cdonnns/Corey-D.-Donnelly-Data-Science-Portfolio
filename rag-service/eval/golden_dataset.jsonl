@@ -1,0 +1,3 @@
+{"question": "What is the capital of France?", "expected_source": "geography_doc_1"}
+{"question": "Who wrote the theory of relativity?", "expected_source": "physics_doc_3"}
+{"question": "What is the boiling point of water at sea level?", "expected_source": "science_doc_7"}

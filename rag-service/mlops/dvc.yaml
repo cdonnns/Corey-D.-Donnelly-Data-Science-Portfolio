@@ -1,0 +1,29 @@
+stages:
+  ingest:
+    cmd: python mlops/ingest.py --input data/raw --output data/processed
+    deps:
+      - data/raw
+      - mlops/ingest.py
+    outs:
+      - data/processed
+
+  build_index:
+    cmd: python mlops/build_index.py --input data/processed --output data/index
+    deps:
+      - data/processed
+      - mlops/build_index.py
+      - app/config.py
+    outs:
+      - data/index
+    params:
+      - embedding_model
+
+  evaluate:
+    cmd: python eval/eval_pipeline.py --index data/index --output eval/results.json
+    deps:
+      - data/index
+      - eval/eval_pipeline.py
+      - eval/golden_dataset.jsonl
+    metrics:
+      - eval/results.json:
+          cache: false

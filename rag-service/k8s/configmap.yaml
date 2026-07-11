@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rag-service-config
+data:
+  RAG_ENVIRONMENT: "production"
+  RAG_VECTOR_DB_BACKEND: "qdrant"
+  RAG_VECTOR_DB_URL: "http://qdrant-service:6333"
+  RAG_MLFLOW_TRACKING_URI: "http://mlflow-service:5000"
+  RAG_LLM_MODEL: "gpt-4o-mini"
