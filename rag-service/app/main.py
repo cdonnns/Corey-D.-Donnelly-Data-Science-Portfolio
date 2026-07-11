@@ -1,14 +1,10 @@
 """
-Production RAG service entrypoint.
+Main API entrypoint. See docs/WRITEUP.md for the longer rationale on some
+of these choices if I forget why later.
 
-Design decisions (see docs/WRITEUP.md for full rationale):
-- FastAPI chosen over Flask for native async support (matters under concurrent
-  retrieval + generation calls) and automatic OpenAPI schema generation.
-- Prometheus metrics exposed on /metrics for scraping, not pushed, so the
-  service stays stateless and horizontally scalable.
-- Health checks split into /healthz (liveness) and /readyz (readiness) because
-  a pod can be "alive" (process running) while not yet "ready" (vector index
-  not loaded) -- conflating these causes k8s to route traffic to cold pods.
+healthz vs readyz: learned this one the hard way -- if you only have one
+health check, k8s starts sending traffic to a pod before the embedding
+model is even loaded and everything 503s for the first ~10s.
 """
 import logging
 import time

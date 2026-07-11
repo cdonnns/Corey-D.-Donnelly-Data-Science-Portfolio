@@ -1,7 +1,6 @@
 """
-Centralized config via env vars (12-factor app pattern). Never hardcode
-secrets/endpoints -- this file is what lets the exact same Docker image run
-in dev, staging, and prod with only env var changes.
+All config comes from env vars, nothing hardcoded here. Same image should
+work for dev/staging/prod, just point it at different env vars.
 """
 from functools import lru_cache
 from pydantic_settings import BaseSettings
@@ -27,7 +26,6 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         env_prefix = "RAG_"
-        extra = "ignore"
 
 
 @lru_cache

@@ -1,9 +1,6 @@
 """
-RAG orchestration: embed query -> retrieve -> build prompt -> generate.
-
-Kept deliberately provider-agnostic for the LLM call (see _call_llm) so this
-same pipeline works whether you're hitting OpenAI, Anthropic, or a
-self-hosted vLLM endpoint -- only _call_llm changes.
+embed -> retrieve -> build prompt -> generate. Keeping _call_llm as its own
+method so swapping providers later doesn't mean rewriting this whole file.
 """
 import json
 import logging
@@ -58,8 +55,8 @@ class RAGPipeline:
         import os
 
         if os.getenv("RAG_MOCK_LLM", "false").lower() == "true":
-            # Deterministic mock path used in CI/tests -- avoids paying for
-            # API calls on every PR and keeps tests fast + offline.
+            # mock path for tests -- don't want to burn API credits on every
+            # test run, or need a key just to run pytest
             return (
                 "This is a mocked answer for testing purposes. [1]",
                 {"prompt_tokens": len(prompt.split()), "completion_tokens": 8},

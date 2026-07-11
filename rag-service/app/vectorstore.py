@@ -1,8 +1,7 @@
 """
-Thin abstraction over the vector DB so the backend can be swapped
-(Chroma for local dev -> Qdrant/pgvector in prod) without touching rag.py.
-This is the kind of seam interviewers ask about: "what if you had to
-change vector DBs in prod?" -- answer: you change one file.
+Wrapper around whatever vector DB we're using. Started with Chroma since
+it needs zero setup locally. Swap to qdrant by changing the backend config,
+should not require touching rag.py.
 """
 from dataclasses import dataclass, field
 from typing import Any
